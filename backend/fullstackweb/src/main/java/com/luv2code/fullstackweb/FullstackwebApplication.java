@@ -1,4 +1,4 @@
-package com.moriahyen.fullstackweb;
+package com.luv2code.fullstackweb;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

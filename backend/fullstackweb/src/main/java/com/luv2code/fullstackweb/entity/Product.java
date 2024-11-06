@@ -1,4 +1,4 @@
-package com.moriahyen.fullstackweb.entity;
+package com.luv2code.fullstackweb.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;

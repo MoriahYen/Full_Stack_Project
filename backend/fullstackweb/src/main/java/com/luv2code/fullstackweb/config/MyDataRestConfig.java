@@ -1,7 +1,7 @@
-package com.moriahyen.fullstackweb.config;
+package com.luv2code.fullstackweb.config;
 
-import com.moriahyen.fullstackweb.entity.Product;
-import com.moriahyen.fullstackweb.entity.ProductCategory;
+import com.luv2code.fullstackweb.entity.Product;
+import com.luv2code.fullstackweb.entity.ProductCategory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
