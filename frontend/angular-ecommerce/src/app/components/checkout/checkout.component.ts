@@ -97,9 +97,15 @@ export class CheckoutComponent implements OnInit {
       this.checkoutFormGroup.controls['billingAddress']
 
         .setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
+
+        // bug fix for states
+        this.billingAddressStates = this.shippingAddressStates;
     }
     else {
       this.checkoutFormGroup.controls['billingAddress'].reset();
+
+      // bug fix for states
+      this.billingAddressStates = [];
     }
 
   }
@@ -108,6 +114,9 @@ export class CheckoutComponent implements OnInit {
     console.log("Handling the submit button");
     console.log(this.checkoutFormGroup.get('customer')!.value);
     console.log("The email address is " + this.checkoutFormGroup.get('customer')!.value.email);
+  
+    console.log("The shipping address country is " + this.checkoutFormGroup.get('shippingAddress')!.value.country.name);
+    console.log("The shipping address state is " + this.checkoutFormGroup.get('shippingAddress')!.value.state.name);
   }
 
   handleMonthsAndYears() {
