@@ -45,17 +45,17 @@ public class Order {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "order")
     private Set<OrderItem> orderItems = new HashSet<>();
 
-//    @ManyToOne
-//    @JoinColumn(name = "customer_id")
-//    private Customer customer;
-//
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
-//    private Address shippingAddress;
-//
-//    @OneToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
-//    private Address billingAddress;
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "shipping_address_id", referencedColumnName = "id")
+    private Address shippingAddress;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_address_id", referencedColumnName = "id")
+    private Address billingAddress;
 
     public void add(OrderItem item) {
 
