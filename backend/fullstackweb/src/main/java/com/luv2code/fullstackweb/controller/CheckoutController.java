@@ -5,9 +5,9 @@ import com.luv2code.fullstackweb.dto.PurchaseResponse;
 import com.luv2code.fullstackweb.service.CheckoutService;
 import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/api/checkout")
-@CrossOrigin("http://localhost:4200")
 public class CheckoutController {
 
     private CheckoutService checkoutService;
