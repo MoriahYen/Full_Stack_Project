@@ -1,5 +1,6 @@
 package com.luv2code.fullstackweb.dto;
 
+
 import lombok.Data;
 
 @Data
