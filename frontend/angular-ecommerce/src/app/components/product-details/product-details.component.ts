@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../services/product.service';
 import { Product } from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
@@ -8,9 +8,10 @@ import { CartService } from '../../services/cart.service';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrl: './product-details.component.css'
+  styleUrls: ['./product-details.component.css']
 })
-export class ProductDetailsComponent {
+export class ProductDetailsComponent implements OnInit {
+
   product: Product = new Product();
 
   constructor(private productService: ProductService,
@@ -38,7 +39,8 @@ export class ProductDetailsComponent {
   addToCart() {
 
     console.log(`Adding to cart: ${this.product.name}, ${this.product.unitPrice}`);
-    const theCartItem = new CartItem(this.product);
+    let theCartItem = new CartItem(this.product.id, this.product.name, this.product.imageUrl, this.product.unitPrice);
+    
     this.cartService.addToCart(theCartItem);
 
   }

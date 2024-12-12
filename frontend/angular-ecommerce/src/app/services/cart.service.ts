@@ -31,7 +31,8 @@ export class CartService {
 
     // check if we already have the item in our cart
     let alreadyExistsInCart: boolean = false;
-    let existingCartItem: CartItem = undefined!;
+    // let existingCartItem: CartItem = undefined;
+    let existingCartItem: CartItem = new CartItem();
 
     if (this.cartItems.length > 0) {
       // find the item in the cart based on item id
@@ -60,7 +61,7 @@ export class CartService {
     let totalQuantityValue: number = 0;
 
     for (let currentCartItem of this.cartItems) {
-      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice;
+      totalPriceValue += currentCartItem.quantity * currentCartItem.unitPrice!;
       totalQuantityValue += currentCartItem.quantity;
     }
 
@@ -83,7 +84,7 @@ export class CartService {
 
     console.log('Contents of the cart');
     for (let tempCartItem of this.cartItems) {
-      const subTotalPrice = tempCartItem.quantity * tempCartItem.unitPrice;
+      const subTotalPrice = tempCartItem.quantity * tempCartItem.unitPrice!;
       console.log(`name: ${tempCartItem.name}, quantity=${tempCartItem.quantity}, unitPrice=${tempCartItem.unitPrice}, subTotalPrice=${subTotalPrice}`);
     }
 

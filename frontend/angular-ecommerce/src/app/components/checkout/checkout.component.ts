@@ -18,7 +18,7 @@ import { Purchase } from '../../common/purchase';
 })
 export class CheckoutComponent implements OnInit {
 
-  checkoutFormGroup: FormGroup;
+  checkoutFormGroup!: FormGroup;
 
   totalPrice: number = 0;
   totalQuantity: number = 0;
@@ -34,17 +34,18 @@ export class CheckoutComponent implements OnInit {
   storage: Storage = sessionStorage;
 
   constructor(private formBuilder: FormBuilder,
-    private luv2ShopFormService: Luv2ShopFormService,
-    private cartService: CartService,
-    private checkoutService: CheckoutService,
-    private router: Router) { }
+              private luv2ShopFormService: Luv2ShopFormService,
+              private cartService: CartService,
+              private checkoutService: CheckoutService,
+              private router: Router) {
+               }
 
   ngOnInit(): void {
+    
+    this.reviewCartDetails();
 
     // read the user's email address from browser storage
     const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
-
-    this.reviewCartDetails();
 
     this.checkoutFormGroup = this.formBuilder.group({
       customer: this.formBuilder.group({
@@ -156,24 +157,25 @@ export class CheckoutComponent implements OnInit {
   get creditCardNumber() { return this.checkoutFormGroup.get('creditCard.cardNumber'); }
   get creditCardSecurityCode() { return this.checkoutFormGroup.get('creditCard.securityCode'); }
 
-  copyShippingAddressToBillingAddress(event: any) {
 
-    if (event.target.checked) {
 
-      this.checkoutFormGroup.controls['billingAddress']
+  copyShippingAddressToBillingAddress(checked: boolean) {
 
-        .setValue(this.checkoutFormGroup.controls['shippingAddress'].value);
+    if (checked) {
+      this.checkoutFormGroup.controls?.['billingAddress']
+            .setValue(this.checkoutFormGroup.controls?.['shippingAddress'].value);
 
       // bug fix for states
       this.billingAddressStates = this.shippingAddressStates;
+
     }
     else {
-      this.checkoutFormGroup.controls['billingAddress'].reset();
+      this.checkoutFormGroup.controls?.['billingAddress'].reset();
 
       // bug fix for states
       this.billingAddressStates = [];
     }
-
+    
   }
 
   onSubmit() {
@@ -185,9 +187,7 @@ export class CheckoutComponent implements OnInit {
     }
 
     // set up order
-    let order = new Order();
-    order.totalPrice = this.totalPrice;
-    order.totalQuantity = this.totalQuantity;
+    let order = new Order(this.totalQuantity, this.totalPrice);
 
     // get cart items
     const cartItems = this.cartService.cartItems;
@@ -202,7 +202,7 @@ export class CheckoutComponent implements OnInit {
     */
 
     // - short way of doing the same thingy
-    let orderItems: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem));
+    let orderItems: OrderItem[] = cartItems.map(tempCartItem => new OrderItem(tempCartItem.imageUrl!, tempCartItem.unitPrice!, tempCartItem.quantity, tempCartItem.id!));
 
     // set up purchase
     let purchase = new Purchase();
@@ -262,7 +262,7 @@ export class CheckoutComponent implements OnInit {
     const creditCardFormGroup = this.checkoutFormGroup.get('creditCard');
 
     const currentYear: number = new Date().getFullYear();
-    const selectedYear: number = Number(creditCardFormGroup!.value.expirationYear);
+    const selectedYear: number = Number(creditCardFormGroup?.value.expirationYear);
 
     // if the current year equals the selected year, then start with the current month
 
@@ -287,8 +287,8 @@ export class CheckoutComponent implements OnInit {
 
     const formGroup = this.checkoutFormGroup.get(formGroupName);
 
-    const countryCode = formGroup!.value.country.code;
-    const countryName = formGroup!.value.country.name;
+    const countryCode = formGroup?.value.country.code;
+    const countryName = formGroup?.value.country.name;
 
     console.log(`${formGroupName} country code: ${countryCode}`);
     console.log(`${formGroupName} country name: ${countryName}`);
@@ -297,14 +297,14 @@ export class CheckoutComponent implements OnInit {
       data => {
 
         if (formGroupName === 'shippingAddress') {
-          this.shippingAddressStates = data;
+          this.shippingAddressStates = data; 
         }
         else {
           this.billingAddressStates = data;
         }
 
         // select first item by default
-        formGroup!.get('state').setValue(data[0]);
+        formGroup?.get('state')?.setValue(data[0]);
       }
     );
   }

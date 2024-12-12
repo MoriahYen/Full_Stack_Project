@@ -9,7 +9,7 @@ import myAppConfig from '../../config/my-app-config';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
   oktaSignin: any;

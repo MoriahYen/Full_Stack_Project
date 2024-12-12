@@ -5,7 +5,7 @@ import { OrderHistoryService } from '../../services/order-history.service';
 @Component({
   selector: 'app-order-history',
   templateUrl: './order-history.component.html',
-  styleUrl: './order-history.component.css'
+  styleUrls: ['./order-history.component.css']
 })
 export class OrderHistoryComponent implements OnInit {
 
@@ -19,6 +19,7 @@ export class OrderHistoryComponent implements OnInit {
   }
 
   handleOrderHistory() {
+
     // read the user's email address from browser storage
     const theEmail = JSON.parse(this.storage.getItem('userEmail')!);
 
@@ -29,4 +30,5 @@ export class OrderHistoryComponent implements OnInit {
       }
     );
   }
+
 }
