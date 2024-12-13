@@ -9,7 +9,7 @@ import { CartService } from '../../services/cart.service';
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list-grid.component.html',
-  styleUrls: ['./product-list.component.css']
+  styleUrl: './product-list.component.css'
 })
 export class ProductListComponent implements OnInit {
 
@@ -26,17 +26,16 @@ export class ProductListComponent implements OnInit {
   previousKeyword: string = "";
 
   constructor(private productService: ProductService,
-              private cartService: CartService,
-              private route: ActivatedRoute) { }
+    private cartService: CartService,
+    private route: ActivatedRoute) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
       this.listProducts();
     });
   }
 
   listProducts() {
-
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
@@ -45,7 +44,6 @@ export class ProductListComponent implements OnInit {
     else {
       this.handleListProducts();
     }
-
   }
 
   handleSearchProducts() {
@@ -65,9 +63,8 @@ export class ProductListComponent implements OnInit {
 
     // now search for the products using keyword
     this.productService.searchProductsPaginate(this.thePageNumber - 1,
-                                               this.thePageSize,
-                                               theKeyword).subscribe(this.processResult());
-                                               
+      this.thePageSize,
+      theKeyword).subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -101,9 +98,16 @@ export class ProductListComponent implements OnInit {
 
     // now get the products for the given category id
     this.productService.getProductListPaginate(this.thePageNumber - 1,
-                                               this.thePageSize,
-                                               this.currentCategoryId)
-                                               .subscribe(this.processResult());
+      this.thePageSize,
+      this.currentCategoryId)
+      .subscribe(
+        data => {
+          this.products = data._embedded.products;
+          this.thePageNumber = data.page.number + 1;
+          this.thePageSize = data.page.size;
+          this.theTotalElements = data.page.totalElements;
+        }
+      );
   }
 
   updatePageSize(pageSize: string) {
@@ -126,9 +130,8 @@ export class ProductListComponent implements OnInit {
     console.log(`Adding to cart: ${theProduct.name}, ${theProduct.unitPrice}`);
 
     // TODO ... do the real work
-    let theCartItem = new CartItem(theProduct.id, theProduct.name, theProduct.imageUrl, theProduct.unitPrice);
+    const theCartItem = new CartItem(theProduct);
 
     this.cartService.addToCart(theCartItem);
   }
-
 }
