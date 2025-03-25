@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
 import { Product } from '../../common/product';
 import { ActivatedRoute } from '@angular/router';
-import { CartItem } from '../../common/cart-item';
-import { CartService } from '../../services/cart.service';
+import { CartService } from 'src/app/services/cart.service';
+import { CartItem } from 'src/app/common/cart-item';
 
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
+
   styleUrls: ['./product-details.component.css']
 })
+
 export class ProductDetailsComponent implements OnInit {
 
   product: Product = new Product();

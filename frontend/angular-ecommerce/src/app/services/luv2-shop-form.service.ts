@@ -1,9 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 import { Country } from '../common/country';
-import { State } from '../common/state';
 import { map } from 'rxjs/operators';
+import { State } from '../common/state';
+import { environment } from 'src/environments/environment';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -11,8 +13,6 @@ import { environment } from '../../environments/environment';
 })
 export class Luv2ShopFormService {
 
-  private countriesUrl = environment['luv2shopApiUrl'] + '/countries';
-  private statesUrl = environment['luv2shopApiUrl'] + '/states';
 
   constructor(private httpClient: HttpClient) { }
 

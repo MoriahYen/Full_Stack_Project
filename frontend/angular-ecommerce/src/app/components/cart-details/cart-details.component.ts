@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { CartItem } from '../../common/cart-item';
-import { CartService } from '../../services/cart.service';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
+
 
 @Component({
   selector: 'app-cart-details',
   templateUrl: './cart-details.component.html',
-  styleUrl: './cart-details.component.css'
+  styleUrls: ['./cart-details.component.css']
 })
 export class CartDetailsComponent implements OnInit {
 
@@ -49,5 +50,4 @@ export class CartDetailsComponent implements OnInit {
   remove(theCartItem: CartItem) {
     this.cartService.remove(theCartItem);
   }
-
 }
