@@ -1,15 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ProductService } from '../../services/product.service';
-import { Product } from '../../common/product';
+import { ProductService } from 'src/app/services/product.service';
+import { Product } from 'src/app/common/product';
 import { ActivatedRoute } from '@angular/router';
-import { CartItem } from '../../common/cart-item';
-import { CartService } from '../../services/cart.service';
-
+import { timeoutWith } from 'rxjs/operators';
+import { CartItem } from 'src/app/common/cart-item';
+import { CartService } from 'src/app/services/cart.service';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list-grid.component.html',
-  styleUrl: './product-list.component.css'
+  styleUrls: ['./product-list.component.css']
 })
 export class ProductListComponent implements OnInit {
 
@@ -23,19 +23,20 @@ export class ProductListComponent implements OnInit {
   thePageSize: number = 5;
   theTotalElements: number = 0;
 
-  previousKeyword: string = "";
+  previousKeyword: string = null;
 
   constructor(private productService: ProductService,
-    private cartService: CartService,
-    private route: ActivatedRoute) { }
+              private cartService: CartService,
+              private route: ActivatedRoute) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.route.paramMap.subscribe(() => {
       this.listProducts();
     });
   }
 
   listProducts() {
+
     this.searchMode = this.route.snapshot.paramMap.has('keyword');
 
     if (this.searchMode) {
@@ -44,11 +45,12 @@ export class ProductListComponent implements OnInit {
     else {
       this.handleListProducts();
     }
+
   }
 
   handleSearchProducts() {
 
-    const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
+    const theKeyword: string = this.route.snapshot.paramMap.get('keyword');
 
     // if we have a different keyword than previous
     // then set thePageNumber to 1
@@ -63,8 +65,9 @@ export class ProductListComponent implements OnInit {
 
     // now search for the products using keyword
     this.productService.searchProductsPaginate(this.thePageNumber - 1,
-      this.thePageSize,
-      theKeyword).subscribe(this.processResult());
+                                               this.thePageSize,
+                                               theKeyword).subscribe(this.processResult());
+                                               
   }
 
   handleListProducts() {
@@ -74,7 +77,7 @@ export class ProductListComponent implements OnInit {
 
     if (hasCategoryId) {
       // get the "id" param string. convert string to a number using the "+" symbol
-      this.currentCategoryId = +this.route.snapshot.paramMap.get('id')!;
+      this.currentCategoryId = +this.route.snapshot.paramMap.get('id');
     }
     else {
       // not category id available ... default to category id 1
@@ -98,31 +101,24 @@ export class ProductListComponent implements OnInit {
 
     // now get the products for the given category id
     this.productService.getProductListPaginate(this.thePageNumber - 1,
-      this.thePageSize,
-      this.currentCategoryId)
-      .subscribe(
-        data => {
-          this.products = data._embedded.products;
-          this.thePageNumber = data.page.number + 1;
-          this.thePageSize = data.page.size;
-          this.theTotalElements = data.page.totalElements;
-        }
-      );
-  }
-
-  updatePageSize(pageSize: string) {
-    this.thePageSize = +pageSize;
-    this.thePageNumber = 1;
-    this.listProducts();
+                                               this.thePageSize,
+                                               this.currentCategoryId)
+                                               .subscribe(this.processResult());
   }
 
   processResult() {
-    return (data: any) => {
+    return data => {
       this.products = data._embedded.products;
       this.thePageNumber = data.page.number + 1;
       this.thePageSize = data.page.size;
       this.theTotalElements = data.page.totalElements;
     };
+  }
+
+  updatePageSize(pageSize: number) {
+    this.thePageSize = pageSize;
+    this.thePageNumber = 1;
+    this.listProducts();
   }
 
   addToCart(theProduct: Product) {
@@ -134,4 +130,5 @@ export class ProductListComponent implements OnInit {
 
     this.cartService.addToCart(theCartItem);
   }
+
 }
