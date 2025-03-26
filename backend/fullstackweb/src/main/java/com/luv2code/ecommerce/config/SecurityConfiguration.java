@@ -14,27 +14,28 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 public class SecurityConfiguration {
 
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
-        //protect endpoint /api/orders
-        http.authorizeHttpRequests(requests ->
-                        requests
-                                .requestMatchers("/api/orders/**")
-                                .authenticated()
-                                .anyRequest().permitAll())
-                .oauth2ResourceServer(oauth2ResourceServer -> oauth2ResourceServer.jwt(Customizer.withDefaults()));
+        // protect endpoint /api/orders
+        http.authorizeRequests(configurer ->
+                        configurer
+                                .antMatchers("/api/orders/**")
+                                .authenticated())
+                .oauth2ResourceServer()
+                .jwt();
 
-        // + CORS filters
-        http.cors(Customizer.withDefaults());
+        // add CORS filters
+        http.cors();
 
-        // + content negotiation strategy
-        http.setSharedObject(ContentNegotiationStrategy.class, new HeaderContentNegotiationStrategy());
+        // add content negotiation strategy
+        http.setSharedObject(ContentNegotiationStrategy.class,
+                             new HeaderContentNegotiationStrategy());
 
-        // + non-empty response body for 401 (more friendly)
+        // force a non-empty response body for 401's to make the response more friendly
         Okta.configureResourceServer401ResponseBody(http);
 
-        // we are not using Cookies for session tracking >> disable CSRF
-        http.csrf(AbstractHttpConfigurer::disable);
+        // disable CSRF since we are not using Cookies for session tracking
+        http.csrf().disable();
 
         return http.build();
     }

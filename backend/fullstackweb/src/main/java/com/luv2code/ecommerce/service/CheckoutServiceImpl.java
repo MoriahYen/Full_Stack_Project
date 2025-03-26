@@ -17,12 +17,13 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 @Service
-public class CheckoutServiceImpl implements CheckoutService{
+public class CheckoutServiceImpl implements CheckoutService {
 
     private CustomerRepository customerRepository;
 
     public CheckoutServiceImpl(CustomerRepository customerRepository,
                                @Value("${stripe.key.secret}") String secretKey) {
+
         this.customerRepository = customerRepository;
 
         // initialize Stripe API with secret key
@@ -32,6 +33,7 @@ public class CheckoutServiceImpl implements CheckoutService{
     @Override
     @Transactional
     public PurchaseResponse placeOrder(Purchase purchase) {
+
         // retrieve the order info from dto
         Order order = purchase.getOrder();
 
@@ -71,6 +73,7 @@ public class CheckoutServiceImpl implements CheckoutService{
 
     @Override
     public PaymentIntent createPaymentIntent(PaymentInfo paymentInfo) throws StripeException {
+
         List<String> paymentMethodTypes = new ArrayList<>();
         paymentMethodTypes.add("card");
 
@@ -83,6 +86,7 @@ public class CheckoutServiceImpl implements CheckoutService{
     }
 
     private String generateOrderTrackingNumber() {
+
         // generate a random UUID number (UUID version-4)
         // For details see: https://en.wikipedia.org/wiki/Universally_unique_identifier
         //
