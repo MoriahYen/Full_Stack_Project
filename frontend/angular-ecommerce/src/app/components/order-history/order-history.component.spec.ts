@@ -8,12 +8,10 @@ describe('OrderHistoryComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ OrderHistoryComponent ]
+      declarations: [OrderHistoryComponent]
     })
     .compileComponents();
-  });
 
-  beforeEach(() => {
     fixture = TestBed.createComponent(OrderHistoryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

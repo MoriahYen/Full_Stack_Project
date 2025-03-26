@@ -1,3 +1,4 @@
+import { Component, OnInit } from '@angular/core';
 import { CartService } from '../../services/cart.service';
 
 @Component({
@@ -28,5 +29,6 @@ export class CartStatusComponent implements OnInit {
       data => this.totalQuantity = data
     );
   }
+
 
 }
